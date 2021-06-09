@@ -131,3 +131,5 @@ dmypy.json
 # linters config
 pyproject.toml
 .flake8
+
+.vscode
