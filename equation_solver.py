@@ -94,9 +94,9 @@ def solve_linear_equation(A: list[list[float]], B: list[float]) -> np.ndarray:
 
     Parameters
     ----------
-    A : list[list[float]]
+    A : list of list
         Input equations.
-    B : list[float]
+    B : list of float
         Input equation results.
 
     Returns
@@ -112,9 +112,11 @@ def solve_linear_equation(A: list[list[float]], B: list[float]) -> np.ndarray:
         if "A" matrix is not square.
     ValueError
         If "B" matrix does not have same number of rows.
+    ValueError
+        If "A" matrix have zero rows or columns.
     """
     if not isinstance(A, list) or not isinstance(B, list):
-        raise ValueError
+        raise ValueError('Inputs must be lists')
 
     A_np = np.array(A, dtype=float)
     B_np = np.array(B, dtype=float)
@@ -125,6 +127,8 @@ def solve_linear_equation(A: list[list[float]], B: list[float]) -> np.ndarray:
         B_np = B_np.reshape(A_np.shape[0], 1)
     if B_np.shape != (A_np.shape[0], 1):
         raise ValueError(f'"B" matrix should have same number of rows: {B_np.shape[0]} != {A_np.shape[0]}')
+    if not all(any(row) for row in A_np) or not all(any(column) for column in A_np.T):
+        raise ValueError('Matrix have zero row or column.')
 
     # create augmented matrix
     matrix = np.concatenate((A_np, B_np), axis=1)
