@@ -72,16 +72,20 @@ def get_possibility_of_sequence(sequence: list[str], number_of_coins: int, possi
     # possibility of choosing certain coin at first step
     coin_possibilities = [1 / number_of_coins] * number_of_coins
 
-    for side in sequence:
-        result_possibilities.append(full_probability(coin_possibilities, possibilities[side]))
+    for side in sequence + ['H']:
+        result_possibilities.append(full_probability(coin_possibilities, possibilities['H']))
 
         # update possibilities of choosing certain coin
         coin_possibilities = [
-            bayes(coin_possibilities[item], possibilities[side][item], result_possibilities[-1])
+            bayes(
+                coin_possibilities[item],
+                possibilities[side][item],
+                full_probability(coin_possibilities, possibilities[side]),
+            )
             for item in range(number_of_coins)
         ]
 
-    return result_possibilities
+    return result_possibilities[1:]
 
 
 if __name__ == '__main__':
